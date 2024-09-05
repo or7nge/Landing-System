@@ -10,7 +10,7 @@ class Camera:
         self.aruko_processor = ArukoProcessor(self.queue)
 
     def cut_frame(self, frame):
-        global FRAME_HEIGHT, FRAME_WIDTH
+        global FRAME_HEIGHT, FRAME_WIDTHW
         FRAME_HEIGHT = FRAME_WIDTH = min(frame.shape[:2])
         height, width, _ = frame.shape
         min_dim = min(height, width)
