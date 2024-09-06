@@ -10,13 +10,12 @@ class Camera:
         self.aruko_processor = ArukoProcessor(self.queue)
 
     def cut_frame(self, frame):
-        global FRAME_HEIGHT, FRAME_WIDTHW
-        FRAME_HEIGHT = FRAME_WIDTH = min(frame.shape[:2])
+        global FRAME_WIDTH
+        FRAME_WIDTH = min(frame.shape[:2])
         height, width, _ = frame.shape
-        min_dim = min(height, width)
-        start_x = (width - min_dim) // 2
-        start_y = (height - min_dim) // 2
-        frame = frame[start_y: start_y + min_dim, start_x: start_x + min_dim]
+        start_x = (width - FRAME_WIDTH) // 2
+        start_y = (height - FRAME_WIDTH) // 2
+        frame = frame[start_y: start_y + FRAME_WIDTH, start_x: start_x + FRAME_WIDTH]
         return frame
 
     def camera_loop(self):
