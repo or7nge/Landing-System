@@ -1,19 +1,19 @@
 from config import *
-import numpy as np
+import numpy as numpy
 import cv2
 from .directive import Directive
 
 
-class FrameExtended(np.ndarray):
+class FrameExtended(numpy.ndarray):
     def __new__(cls, input_array):
-        obj = np.asarray(input_array).view(cls)
+        obj = numpy.asarray(input_array).view(cls)
         return obj
 
     def show_info(self, directive=Directive("NO ARUKO"), aruko0=None, aruko1=None):
         self.show_aruko(aruko0, (0, 0, 255))
         self.show_aruko(aruko1, (90, 90, 90))
 
-        if aruko0:
+        if aruko0 is not None:
             # draw the outline of the ArUco marker
             cv2.line(self, (0, 0), aruko0.topLeft, (255, 0, 0), 2)
             cv2.line(self, (FRAME_WIDTH - 1, 0), aruko0.topRight, (255, 0, 0), 2)
@@ -28,7 +28,7 @@ class FrameExtended(np.ndarray):
         self.update_directive(str(directive), directive.color())
 
     def show_aruko(self, aruko, color):
-        if not aruko:
+        if aruko is None:
             return
         cv2.line(self, aruko.topLeft, aruko.topRight, color, 2)
         cv2.line(self, aruko.topRight, aruko.bottomRight, color, 2)

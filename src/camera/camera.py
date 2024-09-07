@@ -1,6 +1,7 @@
 from config import *
 import cv2
 from .aruko_processor import ArukoProcessor
+import time
 
 
 class Camera:

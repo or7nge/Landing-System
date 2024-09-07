@@ -1,33 +1,29 @@
 from config import *
 from .detected_aruko import DetectedAruko
+from .aby_queue import ABYQueue
 from collections import deque
 import numpy
+import time
 
 
 class ArucoQueue:
     def __init__(self, aruko_width):
         self.aruko_width = aruko_width
-        self.queue = deque(maxlen=ARUKO_QUEUE_SIZE)
-        self.average_aruko = None
+        self.queues = numpy.array([[ABYQueue(ARUKO_QUEUE_SIZE) for _ in range(2)] for _ in range(4)])
 
     def add(self, aruco):
-        self.queue.append(aruco)
-        self.update_average()
+        for i in range(4):
+            for j in range(2):
+                if aruco is None:
+                    self.queues[i][j].add(None)
+                else:
+                    self.queues[i][j].add(aruco[i][j])
+        # numpy.vectorize(lambda queue, cord: queue.add(cord))(self.queues, aruco)
 
-    def get(self):
-        return self.queue
-
-    def update_average(self):
-        if not self.queue:
+    def get_prediction(self):
+        prediction = numpy.array([[self.queues[i][j].get_prediction() for j in range(2)]
+                                 for i in range(4)])
+        if prediction[0][0] is None:
             return None
-        aruco_queue_cleared = []
-        weights = []
-        for i in range(len(self.queue)):
-            if self.queue[i] is not None:
-                aruco_queue_cleared.append(self.queue[i])
-                weights.append(i + 1)
-        if not aruco_queue_cleared:
-            self.average_aruko = None
         else:
-            self.average_aruko = DetectedAruko(numpy.average(
-                aruco_queue_cleared, axis=0, weights=weights), self.aruko_width)
+            return DetectedAruko(prediction, self.aruko_width)

@@ -1,10 +1,11 @@
 from config import *
-import numpy as np
+import numpy as numpy
 from .frame_extended import FrameExtended
 from .aruko_detector import OrangeArucoDetector
 from .detected_aruko import DetectedAruko
 from .directive import Directive
 from .aruko_queue import ArucoQueue
+from .aby_queue import ABYQueue
 
 
 class ArukoProcessor:
@@ -12,7 +13,8 @@ class ArukoProcessor:
         self.queue = queue
         self.aruko_detector = OrangeArucoDetector()
         self.aruko_queue = (ArucoQueue(ARUKO_SMALL_WIDTH), ArucoQueue(ARUKO_BIG_WIDTH))
-        self.selected_aruko = 0
+        self.current_aruko = None
+        self.current_height = ABYQueue(HEIGHT_QUEUE_SIZE)
 
     def add_frame(self, frame):
         frame = FrameExtended(frame)
@@ -20,31 +22,29 @@ class ArukoProcessor:
         current_directive = self.get_directive()
         self.queue.put(current_directive)
 
-        if self.selected_aruko == "small":
+        if self.current_aruko == "small":
             frame.show_info(
                 current_directive,
-                self.aruko_queue[0].average_aruko,
-                self.aruko_queue[1].average_aruko
-            )
-        elif self.selected_aruko == "big":
-            frame.show_info(
-                current_directive,
-                self.aruko_queue[1].average_aruko,
-                self.aruko_queue[0].average_aruko
+                self.aruko_queue[0].get_prediction(),
+                self.aruko_queue[1].get_prediction()
             )
         else:
-            frame.show_info(current_directive)
+            frame.show_info(
+                current_directive,
+                self.aruko_queue[1].get_prediction(),
+                self.aruko_queue[0].get_prediction()
+            )
         return frame
 
     def get_directive(self):
-        small_aruko, big_aruko = (self.aruko_queue[0].average_aruko, self.aruko_queue[1].average_aruko)
-        if small_aruko and (not big_aruko or self.selected_aruko == "small") and small_aruko.get_real_distance() < SWITCH_ARUKO_HEIGHT_MAX:
-            self.selected_aruko = "small"
+        small_aruko, big_aruko = (self.aruko_queue[0].get_prediction(), self.aruko_queue[1].get_prediction())
+        if small_aruko and (not big_aruko or self.current_aruko == "small") and small_aruko.get_real_distance() < SWITCH_ARUKO_HEIGHT_MAX:
+            self.current_aruko = "small"
             return self.directive_from_aruko(small_aruko)
         elif big_aruko:
-            self.selected_aruko = "big"
+            self.current_aruko = "big"
             return self.directive_from_aruko(big_aruko)
-        self.selected_aruko = None
+        self.current_aruko = None
         return Directive("NO ARUKO")
 
     def directive_from_aruko(self, aruko):
@@ -63,5 +63,5 @@ class ArukoProcessor:
 
     def find_arukos(self, frame):
         arukos = self.aruko_detector.detectMarker(frame)
-        self.aruko_queue[0].add(arukos[0])
-        self.aruko_queue[1].add(arukos[1])
+        for i in range(2):
+            self.aruko_queue[i].add(arukos[i])
