@@ -35,9 +35,9 @@ class ArukoProcessor:
                 self.height_queue.add(small_aruko.get_real_height())
             else:
                 self.height_queue.add(None)
-        height = self.height_queue.get_prediction()
 
-        current_directive = self.get_directive()
+        height = self.height_queue.get_prediction()
+        current_directive = self.get_directive(height, small_aruko, big_aruko)
         self.queue.put(current_directive)
 
         if self.current_aruko == "small":
@@ -46,20 +46,18 @@ class ArukoProcessor:
             frame.show_info(current_directive, height, big_aruko, small_aruko)
         return frame
 
-    def get_directive(self):
-        small_aruko, big_aruko = (self.aruko_queue[0].get_prediction(), self.aruko_queue[1].get_prediction())
-        height = self.height_queue.get_prediction()
+    def get_directive(self, height, small_aruko, big_aruko):
         if self.current_aruko == "big" and small_aruko and height < HEIGHT_BIG_TO_SMALL:
             self.current_aruko = "small"
         if self.current_aruko == "small" and big_aruko and height > HEIGHT_SMALL_TO_BIG:
             self.current_aruko = "big"
         if self.current_aruko == "small" and small_aruko:
-            return self.directive_from_aruko(small_aruko)
+            return self.directive_from_aruko(small_aruko, height)
         elif self.current_aruko == "big" and big_aruko:
-            return self.directive_from_aruko(big_aruko)
+            return self.directive_from_aruko(big_aruko, height)
         return Directive("NO ARUKO")
 
-    def directive_from_aruko(self, aruko):
+    def directive_from_aruko(self, aruko, height):
         deviation = aruko.get_aruko_deviation()
         drone_rotation = aruko.get_drone_rotation()
         front_rotation = aruko.get_front_rotation()
@@ -68,6 +66,8 @@ class ArukoProcessor:
         if deviation < ARUKO_DEVIATION_THRESHOLD:
             if aruco_pixel_width > FRAME_WIDTH // 3 and abs(front_rotation) > FRONT_ROTATION_THRESHOLD:
                 return Directive("ROTATE", int(front_rotation))
+            if height < HEIGHT_TO_LAND:
+                return Directive("LAND")
             return Directive("DESCEND")
         if abs(drone_rotation) > DRONE_ROTATION_THRESHOLD:
             return Directive("ROTATE", int(drone_rotation))

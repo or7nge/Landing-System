@@ -6,6 +6,7 @@ class Directive:
         DESCEND [no value] - aruko is in the center, the drone should descend
         ROTATE [value] - drone should rotate itself [value] degrees clockwise
         MOVE [value] - drone should move [value] cm forward
+        LAND [no value] - the drone should land on the ground
         '''
         self.command = command
         self.value = value
