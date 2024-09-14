@@ -26,4 +26,4 @@ class ArucoQueue:
         if prediction[0][0] is None:
             return None
         else:
-            return DetectedAruko(prediction, self.aruko_width)
+            return DetectedAruko(numpy.round(prediction).astype(int), self.aruko_width)

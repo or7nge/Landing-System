@@ -15,13 +15,15 @@ class ABYQueue:
         self.queue.append((cur_time, value))
 
     def get_prediction(self):
+        if len(self.queue) == 0:
+            return None
+
         last = numpy.array(self.queue)[numpy.array(self.queue)[:, 1] != None]
 
         if len(last) == 0:
             return None
         if len(last) == 1:
-            return round(last[0][1])
-
+            return last[0][1]
         if len(last) == 2:
             (time1, value1), (time2, value2) = last
             time_diff = time2 - time1
@@ -29,7 +31,7 @@ class ABYQueue:
             trend = value_diff / time_diff
             current_time = time.time_ns()
             time_delta = current_time - time2
-            next_value = round(value2 + trend * time_delta)
+            next_value = value2 + trend * time_delta
             return next_value
 
         # Extract times and values from the queue
@@ -51,6 +53,6 @@ class ABYQueue:
         time_delta = cur_time - times[-1]
 
         # Prediction based on level, trend, and acceleration
-        next_value = round(level + trend * time_delta + 0.5 * acceleration * (time_delta ** 2))
+        next_value = level + trend * time_delta + 0.5 * acceleration * (time_delta ** 2)
 
         return next_value

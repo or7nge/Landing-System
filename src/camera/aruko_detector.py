@@ -6,7 +6,7 @@ import numpy
 
 class OrangeArucoDetector(cv2.aruco.ArucoDetector):
     def __init__(self):
-        self.dictionary = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_ARUCO_ORIGINAL)
+        self.dictionary = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_250)
         self.parameters = cv2.aruco.DetectorParameters()
         super().__init__(self.dictionary, self.parameters)
 

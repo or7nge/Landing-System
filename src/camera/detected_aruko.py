@@ -40,6 +40,11 @@ class DetectedAruko:
     def get_frame_real_width(self):
         return FRAME_WIDTH * self.aruko_width / self.get_aruco_pixel_width()
 
+    def get_aruko_deviation(self):
+        angle = numpy.arctan2(self.get_real_distance(), self.get_real_height())
+        angle = numpy.degrees(angle)
+        return angle
+
     def get_real_height(self):
         frame_real_width = self.get_frame_real_width()
         return (frame_real_width / 2) / numpy.tan(numpy.radians(CAMERA_ANGLE / 2))

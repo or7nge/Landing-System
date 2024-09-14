@@ -9,7 +9,7 @@ class FrameExtended(numpy.ndarray):
         obj = numpy.asarray(input_array).view(cls)
         return obj
 
-    def show_info(self, directive=Directive("NO ARUKO"), aruko0=None, aruko1=None):
+    def show_info(self, directive=Directive("NO ARUKO"), height=None, aruko0=None, aruko1=None):
         self.show_aruko(aruko0, (0, 0, 255))
         self.show_aruko(aruko1, (90, 90, 90))
 
@@ -22,7 +22,7 @@ class FrameExtended(numpy.ndarray):
 
             cv2.putText(self, f"DRONE ROTATION: {round(aruko0.get_drone_rotation(), 2)}",
                         (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 0, 0), 2)
-            cv2.putText(self, f"DRONE HEIGHT: {round(aruko0.get_real_height(), 2)}",
+            cv2.putText(self, f"DRONE HEIGHT: {round(height, 2)}",
                         (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 0, 0), 2)
 
         self.update_directive(str(directive), directive.color())

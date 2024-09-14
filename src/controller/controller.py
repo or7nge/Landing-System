@@ -1,3 +1,6 @@
 def start_controller_loop(queue):
-    while not queue.empty():
-        print(queue.get())
+    current_directive =
+    while True:
+        while not queue.empty():
+            current_directive = queue.get()
+    return
