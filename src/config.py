@@ -1,20 +1,27 @@
-# CAMERA_ANGLE = 51
+# Camera and Frame Settings
 CAMERA_ANGLE = 53.13
 FRAME_WIDTH = 480
+
+# Drone Rotation and Movement Thresholds
 DRONE_ROTATION_THRESHOLD = 20
 FRONT_ROTATION_THRESHOLD = 20
 ARUKO_DEVIATION_THRESHOLD = 6
 DISTANCE_THRESHOLD = 50
+
+# Queue Sizes for Data Processing
 ARUKO_QUEUE_SIZE = 5
 HEIGHT_QUEUE_SIZE = 5
 
+# Height Change Thresholds
 HEIGHT_BIG_TO_SMALL = 40
 HEIGHT_SMALL_TO_BIG = 50
+HEIGHT_TO_LAND = 10
 
+# ARUKO Marker Information
 ARUKO_BIG_ID = 68
 ARUKO_BIG_WIDTH = 11.8
-
 ARUKO_SMALL_ID = 4
-ARUKO_SMALL_WIDTH = 11.8/3
+ARUKO_SMALL_WIDTH = 11.8 / 3
 
-HEIGHT_TO_LAND = 10
+# Drone Connection String
+DRONE_CONNECTION_STRING = "your_connection_string_here"
