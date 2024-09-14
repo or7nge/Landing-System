@@ -1,5 +1,12 @@
 class Directive:
     def __init__(self, command="NO ARUKO", value=None):
+        '''
+        Commands:
+        NO ARUKO [no value] - no aruko currently detected (in case of landing, the drone should start ascending to search for aruko)
+        DESCEND [no value] - aruko is in the center, the drone should descend
+        ROTATE [value] - drone should rotate itself [value] degrees clockwise
+        MOVE [value] - drone should move [value] cm forward
+        '''
         self.command = command
         self.value = value
 
