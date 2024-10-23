@@ -27,3 +27,9 @@ class ArucoQueue:
             return None
         else:
             return DetectedAruko(numpy.round(prediction).astype(int), self.aruko_width)
+
+    def get_speed(self):
+        if self.queues[0][0].get_prediction() is None:
+            return None
+        else:
+            return

@@ -23,6 +23,9 @@ class DetectedAruko:
     def get_real_distance(self):
         return self.get_pixel_distance() / self.get_aruco_pixel_width() * self.aruko_width
 
+    def convert_to_real_distance(self, pixel_distance):
+        return pixel_distance / self.get_aruco_pixel_width() * self.aruko_width
+
     def get_drone_rotation(self):
         center = self.get_center()
         angle = numpy.arctan2(center[0] - self.drone_center[0], self.drone_center[1] - center[1])

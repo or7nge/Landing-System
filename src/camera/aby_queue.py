@@ -56,3 +56,10 @@ class ABYQueue:
         next_value = level + trend * time_delta + 0.5 * acceleration * (time_delta ** 2)
 
         return next_value
+
+    def get_speed(self):
+        if len(self.queue) == 0:
+            return None
+        if len(self.queue) == 1:
+            return 0
+        return (self.queue[-1][1] - self.queue[-2][1]) / (self.queue[-1][0] - self.queue[-2][0]) * 1e3

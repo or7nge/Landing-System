@@ -38,12 +38,14 @@ class ArukoProcessor:
 
         height = self.height_queue.get_prediction()
         current_directive = self.get_directive(height, small_aruko, big_aruko)
+        # speed = self.height_queue.get_speed()
         self.queue.put(current_directive)
 
         if self.current_aruko == "small":
-            frame.show_info(current_directive, height, small_aruko, big_aruko)
-        else:
-            frame.show_info(current_directive, height, big_aruko, small_aruko)
+            frame.show_info(current_directive, small_aruko, big_aruko,  height)
+        elif self.current_aruko == "big":
+            frame.show_info(current_directive, big_aruko, small_aruko,
+                            height)
         return frame
 
     def get_directive(self, height, small_aruko, big_aruko):

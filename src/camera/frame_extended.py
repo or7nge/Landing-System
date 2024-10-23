@@ -9,23 +9,32 @@ class FrameExtended(numpy.ndarray):
         obj = numpy.asarray(input_array).view(cls)
         return obj
 
-    def show_info(self, directive=Directive("NO ARUKO"), height=None, aruko0=None, aruko1=None):
+    def show_info(self, directive=Directive("NO ARUKO"), aruko0=None, aruko1=None, height=None):
+        # Extend the frame to add a white field at the bottom
+        extended_frame = cv2.copyMakeBorder(self, 0, 100, 0, 0, cv2.BORDER_CONSTANT, value=(255, 255, 255))
+
+        # Show ArUco markers
         self.show_aruko(aruko0, (0, 0, 255))
         self.show_aruko(aruko1, (90, 90, 90))
 
         if aruko0 is not None:
-            # draw the outline of the ArUco marker
-            cv2.line(self, (0, 0), aruko0.topLeft, (255, 0, 0), 2)
-            cv2.line(self, (FRAME_WIDTH - 1, 0), aruko0.topRight, (255, 0, 0), 2)
-            cv2.line(self, (0, FRAME_WIDTH - 1), aruko0.bottomLeft, (255, 0, 0), 2)
-            cv2.line(self, (FRAME_WIDTH - 1, FRAME_WIDTH - 1), aruko0.bottomRight, (255, 0, 0), 2)
+            # Draw the outline of the ArUco marker
+            cv2.line(extended_frame, (0, 0), aruko0.topLeft, (255, 0, 0), 2)
+            cv2.line(extended_frame, (FRAME_WIDTH - 1, 0), aruko0.topRight, (255, 0, 0), 2)
+            cv2.line(extended_frame, (0, FRAME_WIDTH - 1), aruko0.bottomLeft, (255, 0, 0), 2)
+            cv2.line(extended_frame, (FRAME_WIDTH - 1, FRAME_WIDTH - 1), aruko0.bottomRight, (255, 0, 0), 2)
 
-            cv2.putText(self, f"DRONE ROTATION: {round(aruko0.get_drone_rotation(), 2)}",
-                        (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 0, 0), 2)
-            cv2.putText(self, f"DRONE HEIGHT: {round(height, 2)}",
-                        (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 0, 0), 2)
+            # Add text information
+            cv2.putText(extended_frame, f"DRONE ROTATION: {round(aruko0.get_drone_rotation(), 2)}",
+                        (10, FRAME_WIDTH + 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2)
+            cv2.putText(extended_frame, f"DRONE HEIGHT: {round(height, 2)}",
+                        (10, FRAME_WIDTH + 60), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2)
 
+        # Update directive
         self.update_directive(str(directive), directive.color())
+
+        # Return the extended frame
+        return extended_frame
 
     def show_aruko(self, aruko, color):
         if aruko is None:
