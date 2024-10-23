@@ -19,6 +19,13 @@ class Camera:
         frame = frame[start_y: start_y + FRAME_WIDTH, start_x: start_x + FRAME_WIDTH]
         return frame
 
+    def interpolate(self, frame, multiplier=1):
+        height, width = frame.shape[:2]
+        new_height = height * multiplier
+        new_width = width * multiplier
+        scaled_image = cv2.resize(frame, (new_width, new_height), interpolation=cv2.INTER_LINEAR)
+        return scaled_image
+
     def camera_loop(self):
         while True:
             ret, frame = self.video.read()
@@ -27,6 +34,7 @@ class Camera:
                 break
 
             extended_frame = self.aruko_processor.add_frame(frame)
+            extended_frame = self.interpolate(extended_frame, 2)
             cv2.imshow("Image", extended_frame)
 
             key = cv2.waitKey(1) & 0xFF

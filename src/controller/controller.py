@@ -1,4 +1,4 @@
-from drone_commands import execute_directive, connect_to_drone
+# from drone_commands import execute_directive, connect_to_drone
 
 
 def start_controller_loop(queue):
