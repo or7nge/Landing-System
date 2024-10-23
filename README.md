@@ -1,8 +1,5 @@
 # UAV LANDING SYSTEM USING COMPUTER VISION
 
-<!-- <img src="assets\drone.png" alt="UAV photo" width="80%"> -->
-
-
 Our project focuses on developing a high-precision UAV landing system that achieves an accuracy of 10cm without relying on GPS. Our algorithm addresses the challenges of GPS-denied environments and significantly enhances the reliability of autonomous UAV operations.
 ### Key Features:
 * Utilizes computer vision and ArUco markers for positioning
