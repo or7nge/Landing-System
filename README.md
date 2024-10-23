@@ -1,6 +1,6 @@
-# DRONE LANDING SYSTEM USING COMPUTER VISION
+# UAV LANDING SYSTEM USING COMPUTER VISION
 
-<img src="assets\drone.png" alt="Drone photo" width="80%">
+<!-- <img src="assets\drone.png" alt="UAV photo" width="80%"> -->
 
 
 Our project focuses on developing a high-precision UAV landing system that achieves an accuracy of 10cm without relying on GPS. Our algorithm addresses the challenges of GPS-denied environments and significantly enhances the reliability of autonomous UAV operations.
@@ -16,7 +16,7 @@ Our project focuses on developing a high-precision UAV landing system that achie
 
 
 ## Landing Process
-<img src="assets\alogrithm.png" alt="Drone landing algorithm" width="100%">
+<img src="assets\alogrithm.png" alt="UAV landing algorithm" width="100%">
 
 1. **Image Acquisition:** Capture frame from Raspberry Pi camera
 2. **Preprocessing:** Apply image enhancements (e.g., contrast adjustment)
@@ -35,7 +35,7 @@ Considering the real physical size of ArUco markers, we can use camera image and
 
 * Distance:
 $$d = \frac{p_d}{p_w} \times w_a$$
-* Drone rotation:
+* UAV rotation:
 $$\alpha = \arctan2(y_c - y_d, x_c - x_d)$$
 * Height:
 $$h = \frac{w_f}{2\tan(\theta/2)}$$
@@ -78,7 +78,7 @@ We implement an Alpha-Beta-Gamma (α-β-γ) filter to predict the UAV's ArUco po
 
 
 ## Key Observations:
-<img src="assets\graph.png" alt="Graphs of drone's data" width="90%">
+<img src="assets\graph.png" alt="Graphs of UAV's data" width="90%">
 
 ### UAV Height vs. Time:
 * Steady decrease during active descent phase
@@ -111,6 +111,6 @@ These results validate the effectiveness of our dual-marker system and Alpha-Bet
 * *Entire code for the project: https://github.com/or7nge/Delivery-UAV*
 
 ## Project's poster
-<img src="assets\poster.png" alt="Graphs of drone's data" width="100%">
+<img src="assets\poster.png" alt="Graphs of UAV's data" width="100%">
 
 ### [PDF Version](https://github.com/or7nge/Landing-System/blob/main/assets/poster.pdf)
